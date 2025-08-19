@@ -16,5 +16,12 @@
     <p>O jogo {{title}} tem {{2025-year}} anos.</p>
 
     {# Comentário em Jinja2 #}
+
+    <h3>Top Players: </h3>
+    <ol>
+        {% for player in players %}
+            <li>{{player}}</li>
+        {% endfor %}
+    </ol>
 </body>
 </html>
