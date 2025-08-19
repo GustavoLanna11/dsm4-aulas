@@ -23,5 +23,10 @@
             <li>{{player}}</li>
         {% endfor %}
     </ol>
+
+    <h4>Console mais bem avaliado: </h4>
+    {% for key, value in console.items() %}
+    {{key}} : {{value}} <br>
+    {% endfor %}
 </body>
 </html>

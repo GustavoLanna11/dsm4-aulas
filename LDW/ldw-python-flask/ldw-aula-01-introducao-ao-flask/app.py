@@ -15,7 +15,8 @@ def games():
     year = 2022
     category = 'MMORPG'
     players= ['Gustavo', 'Ana', 'Isabely', 'Yasmin']
-    return render_template('games.html', title=title, year=year, category=category, players=players)
+    console = {'name': 'Playstation 5', 'manufacturer': 'Sony', 'year': 2020}
+    return render_template('games.html', title=title, year=year, category=category, players=players, console=console)
 
 # se for executado diretamente pelo interpretador
 if __name__ == '__main__':
