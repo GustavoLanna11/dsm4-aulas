@@ -1,5 +1,5 @@
 # Do pacote importe Flask e o renderizador de páginas
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 from controllers import routes
 
 # Criando instância do Flask
