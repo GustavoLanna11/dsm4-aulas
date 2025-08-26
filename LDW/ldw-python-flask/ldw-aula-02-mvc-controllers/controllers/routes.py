@@ -2,6 +2,7 @@ from flask import render_template, request
 
 def init_app(app):
     
+    gamelist = [{}]
     players= ['Gustavo', 'Ana', 'Isabely', 'Yasmin']
     
     # Rota principal da aplicação '/'
@@ -24,5 +25,7 @@ def init_app(app):
     
     @app.route('/newgame', methods=['GET', 'POST'])
     def newgame():
-        gamelist = [{}]
-        return render_template('newGame.html')
+
+        if request.method == 'POST':
+            if request.form.get('title') and request.form.get('year') and request.form.get('category'): gamelist.append({'Título': request.form.get('title'), 'Ano': request.form.get('year'), 'Categoria': request.form.get('category')})
+        return render_template('newGame.html', gamelist=gamelist)

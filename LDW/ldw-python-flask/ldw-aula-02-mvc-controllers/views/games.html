@@ -6,6 +6,9 @@
     <title>Document</title>
 </head>
 <body>
+    {% extends 'base.html' %}
+    {% block content %}
+
     <h2>Games!</h2>
     <h3>Jogo em destaque: </h3>
     <ul>
@@ -37,5 +40,7 @@
     {% for key, value in console.items() %}
     {{key}} : {{value}} <br>
     {% endfor %}
+
+    {% endblock content %}
 </body>
 </html>

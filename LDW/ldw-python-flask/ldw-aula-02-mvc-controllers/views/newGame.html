@@ -6,6 +6,10 @@
     <title>Cadastro de jogos</title>
 </head>
 <body>
+    {% extends 'base.html' %}
+
+    {% block content %}
+
     <h1>Cadastro de Jogos</h1>
     <hr>
     <form action="{{url_for('newgame')}}" method="POST">
@@ -17,5 +21,22 @@
         <input type="text" name="category">
         <input type="submit" value="Cadastrar">
     </form>
+    <br>
+    <hr>
+    <table>
+        <tr>
+            <th>Título</th>
+            <th>Ano</th>
+            <th>Categoria</th>
+        </tr>
+        {% for game in gamelist %}
+        <tr>
+            <td>{{game.Título}}</td>
+            <td>{{game.Ano}}</td>
+            <td>{{game.Categoria}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% endblock content %}
 </body>
 </html>
