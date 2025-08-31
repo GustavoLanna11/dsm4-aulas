@@ -11,17 +11,23 @@
     {% block content %}
     <div class="container d-flex justify-content-center align-items-center" style="min-height: 80vh;">
         <div class="text-center">
-            <h3 class="mb-4">🎬 Bem-vindo ao <span class="text-primary">StreamX</span>!</h3>
+            <h3 class="mb-4">🎬 Bem-vindo ao <span style="color: purple">StreamX</span>!</h3>
             <p class="mb-4">Selecione uma das opções abaixo para continuar:</p>
 
             <div class="d-grid gap-3 col-6 mx-auto">
-                <a href="{{url_for('movies')}}" class="btn btn-outline-primary btn-lg shadow-sm">
+                <a href="{{url_for('movies')}}" class="btn btn-outline-primary btn-lg shadow-sm"
+                style="color: purple; border-color: purple;"
+                onmouseover="this.style.backgroundColor='purple'; this.style.color='#f5f5f5';"
+                onmouseout="this.style.backgroundColor='transparent'; this.style.color='purple';">
                     📺 Página de Filmes
                 </a>
-                <a href="{{url_for('newmovie')}}" class="btn btn-primary btn-lg shadow-sm">
+                <a href="{{url_for('newmovie')}}" class="btn btn-primary btn-lg shadow-sm"
+                style="background-color: purple; border-color: purple;"
+                onmouseover="this.style.backgroundColor='#800080';">
                     ➕ Cadastrar Filmes
                 </a>
             </div>
+
         </div>
     </div>
     {% endblock content %}

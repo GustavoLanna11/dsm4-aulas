@@ -11,9 +11,10 @@
 
     <div class="container my-4">
         <div class="row justify-content-center">
+
             <!-- Card Filme -->
             <div class="col-md-8">
-                <div class="card shadow-lg mb-4">
+                <div class="card shadow-lg mb-4" style="background-color:#383838; color:#f5f5f5; border:1px solid #4a4a4a;">
                     <div class="card-body text-center">
                         <h2 class="card-title">Filmes!</h2>
                         <h3 class="card-subtitle mb-3">Filme em destaque:</h3>
@@ -30,12 +31,14 @@
 
             <!-- Card Atores -->
             <div class="col-md-8">
-                <div class="card shadow-lg mb-4">
+                <div class="card shadow-lg mb-4" style="background-color:#383838; color:#f5f5f5; border:1px solid #4a4a4a;">
                     <div class="card-body text-center">
                         <h3 class="card-title">Atores principais:</h3>
                         <ol class="list-group list-group-numbered">
                             {% for actor in actors %}
-                                <li class="list-group-item">{{actor}}</li>
+                                <li class="list-group-item" style="background-color:#3a3a3a; color:#f5f5f5; border:1px solid #4a4a4a;">
+                                    {{actor}}
+                                </li>
                             {% endfor %}
                         </ol>
                         <hr>
@@ -43,7 +46,7 @@
                         <form action="{{url_for('movies')}}" method="POST" class="mt-3">
                             <div class="input-group">
                                 <input type="text" name="actor" class="form-control" placeholder="Digite o ator">
-                                <button type="submit" class="btn btn-primary">Adicionar</button>
+                                <button type="submit" class="btn" style="background-color:purple; border-color:purple; color:#f5f5f5;">Adicionar</button>
                             </div>
                         </form>
                     </div>
@@ -52,7 +55,7 @@
 
             <!-- Card Diretor -->
             <div class="col-md-8">
-                <div class="card shadow-lg">
+                <div class="card shadow-lg" style="background-color:#383838; color:#f5f5f5; border:1px solid #4a4a4a;">
                     <div class="card-body text-center">
                         <h4 class="card-title">Diretor mais bem avaliado:</h4>
                         {% for key, value in director.items() %}
@@ -61,10 +64,12 @@
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
 
     {% endblock content %}
 </body>
+
 
 </html>
