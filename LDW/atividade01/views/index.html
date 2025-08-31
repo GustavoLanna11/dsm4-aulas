@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StreamX</title>
+</head>
+<body>
+    {% extends 'base.html' %}
+
+    {% block content %}
+    <div class="container d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+        <div class="text-center">
+            <h3 class="mb-4">🎬 Bem-vindo ao <span class="text-primary">StreamX</span>!</h3>
+            <p class="mb-4">Selecione uma das opções abaixo para continuar:</p>
+
+            <div class="d-grid gap-3 col-6 mx-auto">
+                <a href="{{url_for('movies')}}" class="btn btn-outline-primary btn-lg shadow-sm">
+                    📺 Página de Filmes
+                </a>
+                <a href="{{url_for('newmovie')}}" class="btn btn-primary btn-lg shadow-sm">
+                    ➕ Cadastrar Filmes
+                </a>
+            </div>
+        </div>
+    </div>
+    {% endblock content %}
+</body>
+
+</html>
