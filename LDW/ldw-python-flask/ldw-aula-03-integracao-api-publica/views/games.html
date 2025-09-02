@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    {% extends 'base.html' %}
+    {% block content %}
+
+    <h2>Games!</h2>
+    <h3>Jogo em destaque: </h3>
+    <ul>
+        <li>Título: <strong>{{title}}</strong></li>
+        <li>Ano: <strong>{{year}}</strong></li>
+        <li>Categoria: <strong>{{category}}</strong></li>
+    </ul>
+    <p>O jogo {{title}} tem {{2025-year}} anos.</p>
+
+    {# Comentário em Jinja2 #}
+
+    <h3>Está sendo jogado por: </h3>
+    <ol>
+        {% for player in players %}
+            <li>{{player}}</li>
+        {% endfor %}
+    </ol><hr>
+
+    <!-- função que trata os dados -->
+    <form action="{{url_for('games')}}" method="POST">
+        <label for="player">Jogador</label>
+        <input type="text" name="player">
+        <input type="submit" value="Entrar">
+
+    </form>
+    <hr>
+
+    <h4>Console mais bem avaliado: </h4>
+    {% for key, value in console.items() %}
+    {{key}} : {{value}} <br>
+    {% endfor %}
+
+    {% endblock content %}
+</body>
+</html>
