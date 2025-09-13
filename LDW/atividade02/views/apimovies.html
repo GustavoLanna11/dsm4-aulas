@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<br>
+<div class="container" style="background-color: #f0f0f0; border-radius: 8px;">
+    <div class="row">
+        {% for movie in moviesList %}
+            <div class="col-md-3 m-auto">
+                <div class="card" style="width: 16rem; margin-bottom: 20px;">
+                    <a href="{{ url_for('apimovies', id=movie.id) }}">
+                        <img src="{{ movie.medium_cover_image }}" class="card-img-top" alt="{{ movie.title }}">
+                    </a>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ movie.title }}</h5>
+                        <p class="card-text"><b>Gêneros:</b> {{ movie.genres | join(', ') }}</p>
+                        <p class="card-text"><b>Ano:</b> {{ movie.year }}</p>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+<br>
+
+{% endblock content %}
