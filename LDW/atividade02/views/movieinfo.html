@@ -2,10 +2,11 @@
 
 {% block content %}
 
+<br>
 <div class="container" style="background-color: #f0f0f0; border-radius: 8px;">
     <div class="row">
         <div class="col-md-6 m-auto">
-            <a href="{{ url_for('apimovies') }}" class="btn btn-dark">Voltar para todos os filmes</a>
+            <br><a href="{{ url_for('apimovies') }}" class="btn btn-dark">Voltar para todos os filmes</a><br>
             <div class="card mt-3">
                 <img src="{{ movieInfo.large_cover_image }}" alt="{{ movieInfo.title }}">
                 <div class="card-body m-auto">
@@ -18,8 +19,9 @@
                     <a href="{{ movieInfo.url }}" class="btn btn-danger" target="_blank">Ver no YTS</a>
                 </div>
             </div>
+            <br>
         </div>
     </div>
 </div>
-
+<br>
 {% endblock %}
