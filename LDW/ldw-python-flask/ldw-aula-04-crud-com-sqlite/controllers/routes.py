@@ -84,6 +84,7 @@ def init_app(app):
         gameEstoque = Game.query.all()
         return render_template('estoque.html', gameEstoque=gameEstoque)
     
+    
     @app.route('/edit/<int:id>', methods=['GET', 'POST'])
     def edit(id):
         game = Game.query.get(id)
@@ -104,3 +105,5 @@ def init_app(app):
         db.session.delete(game)
         db.session.commit()
         return redirect(url_for('estoque'))
+
+        
