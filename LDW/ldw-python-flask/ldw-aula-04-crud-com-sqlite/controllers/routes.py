@@ -1,6 +1,7 @@
 from flask import render_template, request, redirect, url_for
 import urllib  # Envia requisições a uma URL
 import json  # Faz a conversão de dados json -> dicionário
+# Importando o model de Game
 from models.database import Game, db
 
 
@@ -73,18 +74,33 @@ def init_app(app):
         else:
             return render_template('apigames.html', gamesList=gamesList)
 
+    # CRUD - Listagem e Cadastro
     @app.route('/estoque', methods=['GET', 'POST'])
-    def estoque():
-        if request.method == 'POST':
-            newGame = Game(request.form['title'], request.form['year'], request.form['category'],
-                           request.form['platform'], request.form['price'], request.form['quantity'])
-            db.session.add(newGame)
+    @app.route('/estoque/delete/<int:id>')
+    def estoque(id=None):
+        # Se o ID for enviado
+        if id:
+            # Selecionando o jogo pelo ID
+            game = Game.query.get(id)
+            # Deleta o jogo pelo ID
+            db.session.delete(game)
             db.session.commit()
             return redirect(url_for('estoque'))
-        gameEstoque = Game.query.all()
-        return render_template('estoque.html', gameEstoque=gameEstoque)
-    
-    
+
+        if request.method == 'POST':
+            # Realiza o cadastro do jogo
+            newGame = Game(request.form['title'], request.form['year'], request.form['category'],
+                           request.form['platform'], request.form['price'], request.form['quantity'])
+            # .session.add é o método do SQLAlchemy para gravar registros no banco
+            db.session.add(newGame)
+            # .session.commit confirma as alterações no banco
+            db.session.commit()
+            return redirect(url_for('estoque'))
+        # query.all é método do SQL Alchemy para selecionar todos os registros
+        gamesEstoque = Game.query.all()
+        return render_template('estoque.html', gamesEstoque=gamesEstoque)
+
+    # CRUD - Rota de EDIÇÃO
     @app.route('/edit/<int:id>', methods=['GET', 'POST'])
     def edit(id):
         game = Game.query.get(id)
@@ -98,12 +114,3 @@ def init_app(app):
             db.session.commit()
             return redirect(url_for('estoque'))
         return render_template('editgame.html', game=game)
-    
-    @app.route('/estoque/delete/<int:id>')
-    def delete_estoque(id):
-        game = Game.query.filter_by(id=id).first()
-        db.session.delete(game)
-        db.session.commit()
-        return redirect(url_for('estoque'))
-
-        

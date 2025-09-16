@@ -5,7 +5,7 @@ from controllers import routes
 # Importando os Models
 from models.database import db
 # Importando a biblioteca para manipulação do S.O
-import os   
+import os
 
 # Criando uma instância do Flask
 app = Flask(__name__, template_folder='views')  # __name__ representa o nome da aplicação
