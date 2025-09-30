@@ -22,11 +22,10 @@ class Game(db.Model):
     categoria = db.Column(db.String(150))
     preco = db.Column(db.Float)
     quantidade = db.Column(db.Integer)
-    # Criando chave estrangeira
-    console_id = db.Column(db.Integer, db.ForeignKey('console.id'))
-    
-    # definindo relacionamento
-    console = db.relationship('Console', backref=db.backref('games', lazy=True))
+    # Criando a chave estrangeira
+    console_id = db.Column(db.Integer, db.ForeignKey('console.id'))    
+    # Definindo o relacionamento
+    console = db.relationship('Console', backref=db.backref('game', lazy=True))
 
     def __init__(self, titulo, ano, categoria, preco, quantidade, console_id):
         self.titulo = titulo
@@ -35,3 +34,14 @@ class Game(db.Model):
         self.preco = preco
         self.quantidade = quantidade
         self.console_id = console_id
+
+# Classe de usuários
+class Usuario(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(80), unique=True, nullable=False)
+    password = db.Column(db.String(250), nullable=False)
+    
+    def __init__(self, username, password):
+        self.username = username
+        self.password = password
+    

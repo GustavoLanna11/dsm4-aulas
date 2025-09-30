@@ -1,5 +1,8 @@
-from flask import render_template, request, url_for, redirect
-from models.database import db, Game, Console
+from flask import render_template, request, url_for, redirect, flash
+from models.database import db, Game, Console, Usuario
+
+# Importando Werkzeug
+from werkzeug.security import generate_password_hash, check_password_hash
 import urllib
 import json
 
@@ -51,7 +54,7 @@ def init_app(app):
         # Cadastra um novo jogo
         if request.method == 'POST':
             newgame = Game(request.form['titulo'], request.form['ano'], request.form['categoria'],
-                           request.form['preco'], request.form['quantidade'])
+                           request.form['preco'], request.form['quantidade'], request.form['console'])
             db.session.add(newgame)
             db.session.commit()
             return redirect(url_for('gamesEstoque'))
@@ -64,8 +67,11 @@ def init_app(app):
             # Faz um SELECT no banco a partir da pagina informada (page)
             # Filtrando os registro de 3 em 3 (per_page)
             games_page = Game.query.paginate(page=page, per_page=per_page)
+            
+            # SELECIONANDO TODOS OS CONSOLES CADASTRADOS
+            consoles = Console.query.all()
 
-            return render_template('gamesestoque.html', gamesestoque=games_page)
+            return render_template('gamesestoque.html', gamesestoque=games_page, consoles=consoles)
 
     # CRUD GAMES - EDIÇÃO
     @app.route('/games/edit/<int:id>', methods=['GET', 'POST'])
@@ -78,9 +84,14 @@ def init_app(app):
             g.categoria = request.form['categoria']
             g.preco = request.form['preco']
             g.quantidade = request.form['quantidade']
+            # Alterando o Console
+            g.console_id = request.form['console']
+            
             db.session.commit()
             return redirect(url_for('gamesEstoque'))
-        return render_template('editgame.html', g=g)
+        # SELECIONANDO OS CONSOLE
+        consoles = Console.query.all()
+        return render_template('editgame.html', g=g, consoles=consoles)
 
     # CRUD CONSOLES - LISTAGEM, CADASTRO E EXCLUSÃO
     @app.route('/consoles/estoque', methods=['GET', 'POST'])
@@ -110,8 +121,6 @@ def init_app(app):
             consoles_page = Console.query.paginate(
                 page=page, per_page=per_page)
             return render_template('consolesestoque.html', consolesestoque=consoles_page)
-        
-            consoles = Console.query.all()
 
     # CRUD CONSOLES - EDIÇÃO
     @app.route('/consoles/edit/<int:id>', methods=['GET', 'POST'])
@@ -145,3 +154,33 @@ def init_app(app):
                 return f'Game com a ID {id} não foi encontrado.'
         else:
             return render_template('apigames.html', gamesjson=gamesjson)
+        
+    @app.route('/login', methods=['GET', 'POST'])
+    def login():
+        if request.method == 'POST':
+            username = request.form['username']
+            password = request.form['password']
+            user = Usuario.query.filter_by(username=username).first()
+            if user and check_password_hash(user.password, password):
+                session['user_id'] = user.id
+                session['username'] = user.username
+                nickname = user.username
+        return render_template('login.html')
+   
+    @app.route('/caduser', methods=['GET', 'POST'])
+    def caduser():
+        if request.method == 'POST':
+            username = request.form['username']
+            password = request.form['password']
+            user = Usuario.query.filter_by(username=username).first()
+            if user:
+                flash( "Usuário já cadastrado. Faça o Login!", 'danger')
+                return redirect(url_for('caduser'))
+            else: 
+                hashed_password = generate_password_hash(password, method='scrypt')
+                newUser = Usuario(username=username, password=hashed_password)
+                db.session.add(newUser)
+                db.session.commit()
+                flash('Registro realizado com sucesso! Você já pode fazer o Login!', 'success')
+                return redirect(url_for('login'))
+        return render_template('caduser.html')
