@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="col-md-6 m-auto">
+    <h3 style="text-align: center;">Editar autor:</h3><br>
+    <form action="{{ url_for('autoredit', id=autor.id) }}" method="POST">
+        <input type="text" name="nome" class="form-control" value="{{ autor.nome }}" required>
+        <input type="number" name="idade" value="{{ autor.idade }}" class="form-control" required>
+        <input type="text" name="genero" value="{{ autor.genero }}" class="form-control" required>
+        <input type="text" name="nacionalidade" value="{{ autor.nacionalidade }}" class="form-control" required><br>
+
+        <input type="submit" value="Alterar" class="btn btn-warning" onclick="return confirm('Confirma as alterações?')">
+        <a href="{{ url_for('autoresestoque') }}"><input type="button" value="Cancelar" class="btn btn-danger"></a>
+    </form>  
+</div>
+{% endblock content %}

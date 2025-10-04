@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <title>The Games</title>
+</head>
+<body style="background-color: #2c2c2c; color: #f5f5f5; min-height: 100vh;">
+<header style="text-align: center; box-shadow: 0 4px 6px -2px purple; background-color: #171717; padding-bottom: 15px;">
+    <img src="{{ url_for('static', filename='images/streamx.png') }}" alt="Logo" width="300" class="mb-3">
+
+    <!-- Navbar centralizada dentro do header -->
+    <div class="d-flex justify-content-center">
+        <a href="{{ url_for('home') }}" class="btn btn-outline-primary mx-2"
+           style="color: purple; border: none; transition: 0.3s;"
+           onmouseover="this.style.backgroundColor='purple'; this.style.color='#f5f5f5';"
+           onmouseout="this.style.backgroundColor='transparent'; this.style.color='purple';">
+           Início
+        </a>
+        <a href="{{ url_for('movies') }}" class="btn btn-outline-primary mx-2"
+           style="color: purple; border: none; transition: 0.3s;"
+           onmouseover="this.style.backgroundColor='purple'; this.style.color='#f5f5f5';"
+           onmouseout="this.style.backgroundColor='transparent'; this.style.color='purple';">
+           Casting
+        </a>
+        <a href="{{ url_for('newmovie') }}" class="btn btn-outline-primary mx-2"
+           style="color: purple; border: none; transition: 0.3s;"
+           onmouseover="this.style.backgroundColor='purple'; this.style.color='#f5f5f5';"
+           onmouseout="this.style.backgroundColor='transparent'; this.style.color='purple';">
+           Filme
+        </a>
+        <a href="{{ url_for('apimovies') }}" class="btn btn-outline-primary mx-2"
+           style="color: purple; border: none; transition: 0.3s;"
+           onmouseover="this.style.backgroundColor='purple'; this.style.color='#f5f5f5';"
+           onmouseout="this.style.backgroundColor='transparent'; this.style.color='purple';">
+           API Pública
+        </a>
+        <a href="{{ url_for('filmesestoque') }}" class="btn btn-outline-primary mx-2"
+           style="color: purple; border: none; transition: 0.3s;"
+           onmouseover="this.style.backgroundColor='purple'; this.style.color='#f5f5f5';"
+           onmouseout="this.style.backgroundColor='transparent'; this.style.color='purple';">
+           Filmes em cartaz
+        </a>
+        <a href="{{ url_for('autoresestoque') }}" class="btn btn-outline-primary mx-2"
+           style="color: purple; border: none; transition: 0.3s;"
+           onmouseover="this.style.backgroundColor='purple'; this.style.color='#f5f5f5';"
+           onmouseout="this.style.backgroundColor='transparent'; this.style.color='purple';">
+           Autores em cartaz
+        </a>
+    </div>
+</header>
+
+
+
+    {% block content %}
+    <!-- Aqui irá o conteúdo das outras páginas -->
+    {% endblock %}
+
+    <footer>
+        <p style="text-align: center;">Todos os direitos reservados - Gustavo Lanna &reg;</p>
+    </footer>
+</body>
+
+
+</html>

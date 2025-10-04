@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="col-md-6 m-auto">
+    <h3 style="text-align: center;">Editar filme:</h3><br>
+    <form action="{{url_for('editgame', id=f.id)}}" method="POST">
+        <input type="text" name="titulo" class="form-control" value="{{f.titulo}}" required>
+        <input type="number" name="ano" value="{{f.ano}}" class="form-control" required>
+        <input type="text" name="categoria" value="{{f.categoria}}" class="form-control" required>
+        <input type="text" name="sinopse" value="{{f.sinopse}}" class="form-control" required>
+
+        <!-- Select para alterar o autor -->
+        <select name="autor" class="form-select" required>
+            {% for autor in autores %}
+                <option value="{{autor.id}}" {% if (f.autor.id==autor.id) %} selected {% endif %}>
+                    {{autor.nome}}
+                </option>
+            {% endfor %}
+        </select>
+
+        <a href="{{url_for('editgame', id=f.id)}}" onclick="return confirm('Confirma as alterações?')"><input
+                type="submit" value="Alterar" class="btn btn-warning"></a>
+        <a href="{{url_for('filmesestoque')}}"><input type="button" value="Cancelar" class="btn btn-danger"></a>
+    </form>
+</div>
+{% endblock content %}

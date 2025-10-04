@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    {% extends 'base.html' %}
+    {% block content %}
+
+    <div class="container my-4">
+        <div class="row justify-content-center">
+
+            <!-- Card Filme -->
+            <div class="col-md-8">
+                <div class="card shadow-lg mb-4" style="background-color:#383838; color:#f5f5f5; border:1px solid #4a4a4a;">
+                    <div class="card-body text-center">
+                        <h3 class="card-subtitle mb-3">Filme em destaque:</h3>
+                        <ul class="list-unstyled">
+                            <li>Título: <strong>{{title}}</strong></li>
+                            <li>Ano: <strong>{{year}}</strong></li>
+                            <li>Categoria: <strong>{{category}}</strong></li>
+                            <li>Sinopse: <strong>{{sinopse}}</strong></li>
+                        </ul>
+                        <p class="mt-2">O filme {{title}} tem {{2025-year}} anos.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card Atores -->
+            <div class="col-md-8">
+                <div class="card shadow-lg mb-4" style="background-color:#383838; color:#f5f5f5; border:1px solid #4a4a4a;">
+                    <div class="card-body text-center">
+                        <h3 class="card-title">Atores principais:</h3>
+                        <ol class="list-group list-group-numbered">
+                            {% for actor in actors %}
+                                <li class="list-group-item" style="background-color:#3a3a3a; color:#f5f5f5; border:1px solid #4a4a4a;">
+                                    {{actor}}
+                                </li>
+                            {% endfor %}
+                        </ol>
+                        <hr>
+                        <!-- Formulário -->
+                        <form action="{{url_for('movies')}}" method="POST" class="mt-3">
+                            <div class="input-group">
+                                <input type="text" name="actor" class="form-control" placeholder="Digite o ator">
+                                <button type="submit" class="btn" style="background-color:purple; border-color:purple; color:#f5f5f5;">Adicionar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card Diretor -->
+            <div class="col-md-8">
+                <div class="card shadow-lg" style="background-color:#383838; color:#f5f5f5; border:1px solid #4a4a4a;">
+                    <div class="card-body text-center">
+                        <h4 class="card-title">Diretor mais bem avaliado:</h4>
+                        {% for key, value in director.items() %}
+                            <p>{{key}} : {{value}}</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    {% endblock content %}
+</body>
+
+
+</html>

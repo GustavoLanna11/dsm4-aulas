@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<br>
+<div class="container" style="background-color: #f0f0f0; border-radius: 8px;">
+    <div class="row">
+        <div class="col-md-6 m-auto">
+            <br><a href="{{ url_for('apimovies') }}" class="btn btn-dark">Voltar para todos os filmes</a><br>
+            <div class="card mt-3">
+                <img src="{{ movieInfo.large_cover_image }}" alt="{{ movieInfo.title }}">
+                <div class="card-body m-auto">
+                    <h3>{{ movieInfo.title }}</h3>
+                    <p><b>Gêneros:</b> {{ movieInfo.genres | join(', ') }}</p>
+                    <p><b>Descrição:</b> {{ movieInfo.summary }}</p>
+                    <p><b>Ano:</b> {{ movieInfo.year }}</p>
+                    <p><b>Duração:</b> {{ movieInfo.runtime }} min</p>
+                    <p><b>Nota:</b> {{ movieInfo.rating }}</p>
+                    <a href="{{ movieInfo.url }}" class="btn btn-danger" target="_blank">Ver no YTS</a>
+                </div>
+            </div>
+            <br>
+        </div>
+    </div>
+</div>
+<br>
+{% endblock %}

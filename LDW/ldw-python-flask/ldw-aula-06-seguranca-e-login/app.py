@@ -19,7 +19,8 @@ DB_NAME = 'thegames'
 app.config['DATABASE_NAME'] = DB_NAME
 
 # Passando o endereço do banco ao Flask
-app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql://root@localhost/{DB_NAME}'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:@localhost/thegames'
+
 
 # Secret para as flash messages
 app.config['SECRET_KEY'] = 'thegamessecret'

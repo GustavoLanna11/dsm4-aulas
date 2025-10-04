@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Controle de Filmes</h2>
+<br />
+<details>
+  <summary>[ Cadastrar novo filme ]</summary>
+  <div class="col-md-4">
+    <form action="{{url_for('filmesestoque')}}" method="POST">
+      <input
+        type="text"
+        name="titulo"
+        placeholder="Título"
+        class="form-control"
+        required
+      />
+      <input
+        type="number"
+        name="ano"
+        placeholder="Ano"
+        class="form-control"
+        required
+      />
+      <input
+        type="text"
+        name="categoria"
+        placeholder="Categoria"
+        class="form-control"
+        required
+      />
+      <input
+        type="text"
+        name="sinopse"
+        placeholder="Sinopse"
+        class="form-control"
+        required
+      />
+
+      <!-- SELECT PARA ESCOLHER O AUTOR -->
+      <select name="autor_id" class="form-select" required>
+        <option value="" selected disabled>Selecione um autor...</option>
+        {% for autor in autores %}
+        <option value="{{autor.id}}">{{autor.nome}}</option>
+        {% endfor %}
+      </select>
+
+      <input type="submit" value="Cadastrar" class="btn btn-success" />
+      <input type="reset" value="Limpar" class="btn btn-danger" />
+    </form>
+  </div>
+</details>
+
+<hr />
+<h5>Filmes:</h5>
+<br />
+<table class="table table-bordered table-hover">
+  <thead class="table-dark">
+    <tr>
+      <th style="width: 50px"></th>
+      <th>Título:</th>
+      <th>Ano:</th>
+      <th>Categoria:</th>
+      <th>Sinopse:</th>
+      <th>Autor:</th>
+      <th style="text-align: center" colspan="2">Ação:</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for f in filmesestoque.items %}
+    <tr>
+      <td style="text-align: center">
+        <img
+          src="{{url_for('static', filename='imgs/game-icon.png')}}"
+          alt="Produto"
+          width="40px"
+        />
+      </td>
+      <td>{{f.titulo}}</td>
+      <td>{{f.ano}}</td>
+      <td>{{f.categoria}}</td>
+      <td>{{f.sinopse}}</td>
+      <td>{{f.autor.nome if f.autor else 'Sem autor'}}</td>
+      <td style="text-align: center; width: 130px">
+        <a class="btn btn-warning" href="{{url_for('filmeedit', id=f.id)}}">Editar</a>
+      </td>
+      <td style="text-align: center; width: 130px">
+        <a
+          class="btn btn-danger"
+          href="{{url_for('filmesestoque', id=f.id)}}"
+          onclick="return confirm('Deseja mesmo excluir o filme {{f.titulo}}?')"
+        >Excluir</a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<p style="text-align: center">
+  {% if filmesestoque.has_prev %}
+  <a href="{{url_for('filmesestoque', page=filmesestoque.prev_num)}}">&lt;&lt; Anterior</a>
+  {% endif %}
+
+  {% if filmesestoque.has_next %}
+  <a href="{{url_for('filmesestoque', page=filmesestoque.next_num)}}">Próximo &gt;&gt;</a>
+  {% endif %}
+</p>
+
+{% endblock content %}

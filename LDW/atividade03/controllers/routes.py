@@ -1,0 +1,156 @@
+from flask import render_template, request, url_for, redirect, flash
+import urllib.request, json
+from models.database import db, Filme, Autor
+
+def init_app(app):
+
+    movielist = [{}]
+    actors = ['Gustavo', 'Ana', 'Isabely', 'Yasmin']
+
+    # Rota principal da aplicação '/'
+    @app.route('/', endpoint='home')
+    def home():
+        return render_template('index.html')
+
+    @app.route('/movies', methods=['GET', 'POST'], endpoint='movies')
+    def movies():
+        title = 'Pixels'
+        year = 2018
+        category = 'Comedy'
+        sinopse = 'A movie of comedy and games!'
+        director = {'name': 'Gustavo', 'age': 25, 'country': 'Brasil'}
+
+        if request.method == 'POST':
+            if request.form.get('actor'):
+                actors.append(request.form.get('actor'))
+
+        return render_template('movies.html', title=title, year=year, category=category, sinopse=sinopse, director=director, actors=actors)
+
+    @app.route('/newmovie', methods=['GET', 'POST'], endpoint='newmovie')
+    def newmovie():
+        if request.method == 'POST':
+            if request.form.get('title') and request.form.get('year') and request.form.get('category') and request.form.get('sinopse'):
+                movielist.append({
+                    'Título': request.form.get('title'),
+                    'Ano': request.form.get('year'),
+                    'Categoria': request.form.get('category'),
+                    'Sinopse': request.form.get('sinopse')
+                })
+
+        return render_template('newMovie.html', movielist=movielist)
+
+    @app.route('/apimovies', methods=['GET'], endpoint='apimovies')
+    @app.route('/apimovies/<int:id>', methods=['GET'], endpoint='apimovieinfo')
+    def apimovies(id=None):
+        url = 'https://yts.mx/api/v2/list_movies.json'
+        response = urllib.request.urlopen(url)
+        data = json.loads(response.read())
+
+        moviesList = data.get("data", {}).get("movies", [])
+
+        if id:
+            movieInfo = next((movie for movie in moviesList if movie['id'] == id), None)
+            if movieInfo:
+                return render_template('movieinfo.html', movieInfo=movieInfo)
+            else:
+                return f'Filme com a ID {id} não foi encontrado'
+        else:
+            return render_template('apimovies.html', moviesList=moviesList)
+
+    @app.route('/cadfilmes', methods=['GET', 'POST'], endpoint='cadfilmes')
+    def cadfilmes():
+        if request.method == 'POST':
+            if request.form.get('titulo') and request.form.get('ano') and request.form.get('categoria') and request.form.get('sinopse'):
+                movielist.append({
+                    'Título': request.form.get('titulo'),
+                    'Ano': request.form.get('ano'),
+                    'Categoria': request.form.get('categoria'),
+                    'Sinopse': request.form.get('sinopse')
+                })
+                return redirect(url_for('cadfilmes'))
+
+        return render_template('cadfilmes.html', movielist=movielist)
+
+    # Crud filmes - Listagem, cadastro e exclusão
+    @app.route('/filmes/estoque', methods=['GET', 'POST'], endpoint='filmesestoque')
+    @app.route('/filmes/estoque/delete/<int:id>')
+    def filmesEstoque(id=None):
+        if id:
+            filme = Filme.query.get(id)
+            db.session.delete(filme)
+            db.session.commit()
+            return redirect(url_for('filmesestoque'))
+
+        if request.method == 'POST':
+            newfilme = Filme(
+                request.form['titulo'],
+                request.form['ano'],
+                request.form['categoria'],
+                request.form['sinopse'],
+                request.form['autor_id']  # <-- autor_id incluído aqui
+            )
+            db.session.add(newfilme)
+            db.session.commit()
+            return redirect(url_for('filmesestoque'))
+
+        page = request.args.get('page', 1, type=int)
+        per_page = 3
+        filmes_page = Filme.query.paginate(page=page, per_page=per_page)
+
+        autores = Autor.query.all()  # <-- lista de autores para o formulário
+        return render_template('filmesestoque.html', filmesestoque=filmes_page, autores=autores)
+
+    # Crud Filmes - Edição
+    @app.route('/filmes/edit/<int:id>', methods=['GET', 'POST'], endpoint='filmeedit')
+    def filmeEdit(id):
+        f = Filme.query.get(id)
+        if request.method == 'POST':
+            f.titulo = request.form['titulo']
+            f.ano = request.form['ano']
+            f.categoria = request.form['categoria']
+            f.sinopse = request.form['sinopse']
+            db.session.commit()
+            return redirect(url_for('filmesestoque'))
+
+        return render_template('editfilme.html', f=f)
+
+    # Crud Autores - Listagem, cadastro e exclusão
+    @app.route('/autores/estoque', methods=['GET', 'POST'], endpoint='autoresestoque')
+    @app.route('/autores/estoque/delete/<int:id>')
+    def autoresEstoque(id=None):
+        if id:
+            autor = Autor.query.get(id)
+            db.session.delete(autor)
+            db.session.commit()
+            return redirect(url_for('autoresestoque'))
+
+        if request.method == 'POST':
+            newautor = Autor(
+                request.form['nome'],
+                request.form['idade'],
+                request.form['genero'],
+                request.form['nacionalidade']
+            )
+            db.session.add(newautor)
+            db.session.commit()
+            return redirect(url_for('autoresestoque'))
+
+        page = request.args.get('page', 1, type=int)
+        per_page = 3
+        autores_page = Autor.query.paginate(page=page, per_page=per_page)
+
+        return render_template('autorestoque.html', autoresestoque=autores_page)
+
+    # Crud Autores - Edição
+    @app.route('/autores/edit/<int:id>', methods=['GET', 'POST'], endpoint='autoredit')
+    def autorEdit(id):
+        autor = Autor.query.get(id)
+        if request.method == 'POST':
+            autor.nome = request.form['nome']
+            autor.idade = request.form['idade']
+            autor.genero = request.form['genero']
+            autor.nacionalidade = request.form['nacionalidade']
+            db.session.commit()
+            return redirect(url_for('autoresestoque'))
+
+        return render_template('editautor.html', autor=autor)
