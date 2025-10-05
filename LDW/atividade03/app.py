@@ -13,6 +13,9 @@ app.config['DATABASE_NAME'] = DB_NAME
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:@localhost/streamx'
 
+# Secret para as flash messages
+app.config['SECRET_KEY'] = 'streamxsecret'
+
 if __name__ == '__main__':
     connection = pymysql.connect(
         host='localhost',
@@ -38,6 +41,3 @@ if __name__ == '__main__':
     app.run(host='localhost', port=5000, debug=True)
 
 
-# se for executado diretamente pelo interpretador
-if __name__ == '__main__':
-    app.run(host='localhost', port=4000, debug=True) #iniciando servidor

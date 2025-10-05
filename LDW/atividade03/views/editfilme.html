@@ -1,25 +1,51 @@
 {% extends 'base.html' %}
+
 {% block content %}
-<div class="col-md-6 m-auto">
-    <h3 style="text-align: center;">Editar filme:</h3><br>
-    <form action="{{url_for('editgame', id=f.id)}}" method="POST">
-        <input type="text" name="titulo" class="form-control" value="{{f.titulo}}" required>
-        <input type="number" name="ano" value="{{f.ano}}" class="form-control" required>
-        <input type="text" name="categoria" value="{{f.categoria}}" class="form-control" required>
-        <input type="text" name="sinopse" value="{{f.sinopse}}" class="form-control" required>
+<style>
+    .text-purple {
+        color: #bb86fc !important; /* Roxo suave estilo Material Design */
+    }
+</style>
 
-        <!-- Select para alterar o autor -->
-        <select name="autor" class="form-select" required>
-            {% for autor in autores %}
-                <option value="{{autor.id}}" {% if (f.autor.id==autor.id) %} selected {% endif %}>
-                    {{autor.nome}}
-                </option>
-            {% endfor %}
-        </select>
+<div class="container mt-4 text-white bg-dark p-4 rounded shadow col-md-6">
+    <h3 class="text-purple text-center mb-4">Editar Filme</h3>
 
-        <a href="{{url_for('editgame', id=f.id)}}" onclick="return confirm('Confirma as alterações?')"><input
-                type="submit" value="Alterar" class="btn btn-warning"></a>
-        <a href="{{url_for('filmesestoque')}}"><input type="button" value="Cancelar" class="btn btn-danger"></a>
+    <form action="{{ url_for('filmeedit', id=f.id) }}" method="POST" onsubmit="return confirm('Confirma as alterações?')" class="row g-3">
+        <div class="col-md-12">
+            <label class="form-label">Título:</label>
+            <input type="text" name="titulo" class="form-control bg-dark text-white border-secondary" value="{{ f.titulo }}" required>
+        </div>
+
+        <div class="col-md-6">
+            <label class="form-label">Ano:</label>
+            <input type="number" name="ano" class="form-control bg-dark text-white border-secondary" value="{{ f.ano }}" required>
+        </div>
+
+        <div class="col-md-6">
+            <label class="form-label">Categoria:</label>
+            <input type="text" name="categoria" class="form-control bg-dark text-white border-secondary" value="{{ f.categoria }}" required>
+        </div>
+
+        <div class="col-md-12">
+            <label class="form-label">Sinopse:</label>
+            <input type="text" name="sinopse" class="form-control bg-dark text-white border-secondary" value="{{ f.sinopse }}" required>
+        </div>
+
+        <div class="col-md-12">
+            <label class="form-label">Autor:</label>
+            <select name="autor" class="form-select bg-dark text-white border-secondary" required>
+                {% for autor in autores %}
+                    <option value="{{ autor.id }}" {% if f.autor.id == autor.id %} selected {% endif %}>
+                        {{ autor.nome }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="col-12 d-flex justify-content-between">
+            <input type="submit" value="Alterar" class="btn btn-warning">
+            <a href="{{ url_for('cadfilmes') }}" class="btn btn-danger">Cancelar</a>
+        </div>
     </form>
 </div>
 {% endblock content %}

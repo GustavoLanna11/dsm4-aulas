@@ -1,61 +1,96 @@
 {% extends 'base.html' %}
+
 {% block content %}
-<h2>Controle - Autores</h2><br>
-<details>
-    <summary>[ Cadastrar novo autor ]</summary>
-    <div class="col-md-4">
-        <form action="{{ url_for('autoresestoque') }}" method="POST">
-            <input type="text" name="nome" placeholder="Nome" class="form-control" required>
-            <input type="number" name="idade" placeholder="Idade" class="form-control" required>
-            <input type="text" name="genero" placeholder="Gênero" class="form-control" required>
-            <input type="text" name="nacionalidade" placeholder="Nacionalidade" class="form-control" required><br>
-            <input type="submit" value="Cadastrar" class="btn btn-success">
-            <input type="reset" value="Limpar" class="btn btn-danger">
-        </form>
+<style>
+    .text-purple {
+        color: #bb86fc !important;
+    }
+</style>
+
+<div class="container mt-4 text-white bg-dark p-4 rounded shadow">
+    <h2 class="text-purple">Controle de Autores</h2>
+    <hr class="border-light">
+
+    <details class="mb-4">
+        <summary class="mb-2 text-info">[ Cadastrar novo autor ]</summary>
+        <div class="col-md-6 mt-3">
+            <form action="{{ url_for('autoresestoque') }}" method="POST" class="row g-3">
+
+                <div class="col-md-6">
+                    <label for="nome" class="form-label">Nome</label>
+                    <input type="text" name="nome" id="nome" class="form-control bg-dark text-white border-secondary" required>
+                </div>
+
+                <div class="col-md-6">
+                    <label for="idade" class="form-label">Idade</label>
+                    <input type="number" name="idade" id="idade" class="form-control bg-dark text-white border-secondary" required>
+                </div>
+
+                <div class="col-md-6">
+                    <label for="genero" class="form-label">Gênero</label>
+                    <input type="text" name="genero" id="genero" class="form-control bg-dark text-white border-secondary" required>
+                </div>
+
+                <div class="col-md-6">
+                    <label for="nacionalidade" class="form-label">Nacionalidade</label>
+                    <input type="text" name="nacionalidade" id="nacionalidade" class="form-control bg-dark text-white border-secondary" required>
+                </div>
+
+                <div class="col-12">
+                    <input type="submit" value="Cadastrar" class="btn btn-success">
+                    <input type="reset" value="Limpar" class="btn btn-secondary">
+                </div>
+            </form>
+        </div>
+    </details>
+
+    <hr class="border-light">
+    <h5 class="text-purple">Autores Cadastrados</h5>
+
+    <div class="table-responsive">
+        <table class="table table-dark table-bordered table-hover align-middle mt-3">
+            <thead class="table-secondary text-dark">
+                <tr>
+                    <th style="width: 50px;"></th>
+                    <th>Nome</th>
+                    <th>Idade</th>
+                    <th>Gênero</th>
+                    <th>Nacionalidade</th>
+                    <th colspan="2" class="text-center">Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for autor in autoresestoque.items %}
+                <tr>
+                    <td></td>
+                    <td>{{ autor.nome }}</td>
+                    <td>{{ autor.idade }}</td>
+                    <td>{{ autor.genero }}</td>
+                    <td>{{ autor.nacionalidade }}</td>
+                    <td class="text-center" style="width: 130px;">
+                        <a class="btn btn-warning btn-sm" href="{{ url_for('autoredit', id=autor.id) }}">Editar</a>
+                    </td>
+                    <td class="text-center" style="width: 130px;">
+                        <a class="btn btn-danger btn-sm"
+                           href="{{ url_for('autoresdelete', id=autor.id) }}"
+                           onclick="return confirm('Deseja mesmo excluir o autor {{ autor.nome }}?')">
+                            Excluir
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
-</details>
 
-<hr>
-<h5>Autores:</h5><br>
-<table class="table table-bordered table-hover">
-    <thead class="table-dark">
-        <tr>
-            <th style="width: 50px;"></th>
-            <th>Nome:</th>
-            <th>Idade:</th>
-            <th>Gênero:</th>
-            <th>Nacionalidade:</th>
-            <th style="text-align: center;" colspan="2">Ação:</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for autor in autoresestoque.items %}
-        <tr>
-            <td style="text-align: center;">
-                <img src="{{ url_for('static', filename='imgs/game-icon.png') }}" alt="Autor" width="40px">
-            </td>
-            <td>{{ autor.nome }}</td>
-            <td>{{ autor.idade }}</td>
-            <td>{{ autor.genero }}</td>
-            <td>{{ autor.nacionalidade }}</td>
-            <td style="text-align: center; width: 130px;">
-                <a class="btn btn-warning" href="{{ url_for('autoredit', id=autor.id) }}">Editar</a>
-            </td>
-            <td style="text-align: center; width: 130px;">
-                <a class="btn btn-danger" href="{{ url_for('autoresestoque', id=autor.id) }}"
-                   onclick="return confirm('Deseja mesmo excluir o autor {{ autor.nome }}?')">Excluir</a>
-            </td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
-
-<p style="text-align: center;">
-    {% if autoresestoque.has_prev %}
-        <a href="{{ url_for('autoresestoque', page=autoresestoque.prev_num) }}">&lt;&lt; Anterior</a>
-    {% endif %}
-    {% if autoresestoque.has_next %}
-        <a href="{{ url_for('autoresestoque', page=autoresestoque.next_num) }}">Próximo &gt;&gt;</a>
-    {% endif %}
-</p>
-{% endblock content %}
+    <!-- Paginação -->
+    <div class="text-center mt-3">
+        {% if autoresestoque.has_prev %}
+            <a href="{{ url_for('autoresestoque', page=autoresestoque.prev_num) }}" class="btn btn-outline-light btn-sm me-2">&laquo; Anterior</a>
+        {% endif %}
+        {% if autoresestoque.has_next %}
+            <a href="{{ url_for('autoresestoque', page=autoresestoque.next_num) }}" class="btn btn-outline-light btn-sm">Próximo &raquo;</a>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
