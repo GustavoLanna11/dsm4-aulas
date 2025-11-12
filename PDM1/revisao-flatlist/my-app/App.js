@@ -27,6 +27,13 @@ export default function App() {
 
   const render = ({item}) => (
     <View>
+      <Image 
+        source={{
+          uri: "url-imagem",
+        }}
+        style={{width: 100, height:100}}
+      />
+
       <View>
         <Text>{item.title}</Text>
         <Text>{item.url}</Text>
